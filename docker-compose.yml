@@ -1,0 +1,53 @@
+{
+  "version": "3.9",
+  "services": {
+    "bot": {
+      "build": ".",
+      "container_name": "rocks_music_bot",
+      "env_file": [
+        ".env"
+      ],
+      "restart": "unless-stopped",
+      "volumes": [
+        "./data:/app/data"
+      ],
+      "ports": [
+        "8080:8080"
+      ]
+    },
+    "redis": {
+      "image": "redis:7-alpine",
+      "restart": "unless-stopped",
+      "ports": [
+        "6379:6379"
+      ]
+    },
+    "mongo": {
+      "image": "mongo:7",
+      "restart": "unless-stopped",
+      "ports": [
+        "27017:27017"
+      ],
+      "volumes": [
+        "./.mongo:/data/db"
+      ]
+    },
+    "prometheus": {
+      "image": "prom/prometheus:latest",
+      "volumes": [
+        "./ops/prometheus.yml:/etc/prometheus/prometheus.yml"
+      ],
+      "ports": [
+        "9090:9090"
+      ],
+      "restart": "unless-stopped"
+    },
+    "grafana": {
+      "image": "grafana/grafana-oss:latest",
+      "ports": [
+        "3000:3000"
+      ],
+      "restart": "unless-stopped"
+    }
+  }
+}
